@@ -1,10 +1,12 @@
-FROM ubuntu:latest
+FROM ubuntu:23.04
 
+# Adapted from Jan Balewski's code located at 
+# https://bitbucket.org/balewski/jannersc/src/master/dockerVaria/ubuntu/Dockerfile.ubu20-neuron8
 # Goal:  NEURON-8 and Jupyter-notebook
 
 # on laptop:
 #    Build only for amd64 (AMD), takes 2m35s
-#    time docker build -f Dockerfile.ubu20-neuron8  -t balewski/ubu20-neuron8:v6 .
+#    time docker build -f Dockerfile.ubu20-neuron8  -t balewski/ubu23-neuron8:v6 .
 #
 #         xhost + 127.0.0.1
 #         docker run -it  -e DISPLAY=host.docker.internal:0 --user balewski balewski/ubu20-neuron8:v6   /bin/bash
@@ -16,27 +18,26 @@ FROM ubuntu:latest
 #         time docker push balewski/ubu20-neuron8:v6
 # at NERSC:  shifterimg  pull docker:balewski/ubu20-neuron8:v6
 
-# is needed by   one of libs 
+# needed by one of the libs 
 ARG DEBIAN_FRONTEND=noninteractive
 ENV TZ=America/Los_Angeles
 
+# update os and install tools
 RUN echo updating OS && \
     apt-get update && \
     apt-get install -y  locales autoconf automake gcc g++ make vim wget  ssh git emacs aptitude build-essential xterm python3-pip   python3-tk python3-scipy python3-dev iputils-ping net-tools screen  && \
     apt-get clean all
-
 # notes: python3-tk instals TK for matplotlib to display graphic on Cori
 
+# install python libs
 RUN echo installing python libs  && \
     pip3 install --upgrade pip && \
-    pip3 install numpy scipy matplotlib h5py ruamel.yaml jupyter jupyter_server scipy bluepyopt neuron Igor && \
-    pip3 install --upgrade pip && \
+    pip3 install numpy scipy matplotlib h5py ruamel.yaml jupyter jupyter_server bluepyopt neuron Igor && \
     pip3 install  --upgrade Pillow
-    
 # notes: Pillow is needed by matplotlib backend 'TkAgg' 
-
 # note: h5py will not install on IBM ppc64le
 
+# add Sushanth and Chad
 RUN echo add users to docker image  && \
     groupadd --gid 1031480 balewski   && \
     adduser --uid 31480 --gid 1031480 --disabled-password  --gecos ""   balewski
@@ -47,8 +48,8 @@ RUN  groupadd --gid 95092 jinan   && \
  groupadd --gid 71705 roybens   && \			
    adduser --uid 71705  --gid 71705  --disabled-password  --gecos ""   roybens
 
-ADD docker-entrypoint.sh /srv/docker-entrypoint.sh
-RUN  echo 4-AAAAAAAAAA ENTRYPOINT  && chmod a+x /srv/docker-entrypoint.sh
+ADD docker.sh /srv/docker-entrypoint.sh
+RUN  echo activiate entrypoint  && chmod a+x /srv/docker-entrypoint.sh
 ENTRYPOINT ["/srv/docker-entrypoint.sh"]
 
 
