@@ -1,0 +1,14 @@
+{
+    "argv": [
+        "shifter",
+        "--image=sk2004/ubu22-neuron8:v2",
+        "/usr/bin/python3",
+        "-m",
+        "ipykernel_launcher",
+        "-f",
+        "{connection_file}"
+    ],
+    "display_name": "ubu22-neuron8-kernel",
+    "language": "python"
+}
+
