@@ -6,6 +6,8 @@
 # using a short-hand version
 [[ ! -z "${DOCENT_VERBOSE}" ]] && echo Image /srv/docker-entrypoint.sh
 
+unset DISPLAY
+
 if [[ ! -z "${DOCENT_VERBOSE}" ]] ; then
     cat /etc/*release |grep PRETTY_NAME
     free -g
