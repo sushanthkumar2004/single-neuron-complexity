@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Adapted from Jan Balewski's code located at 
+# https://bitbucket.org/balewski/jannersc/src/master/dockerVaria/ubuntu/docker-entrypoint.sh
+
 # using a short-hand version
 [[ ! -z "${DOCENT_VERBOSE}" ]] && echo Image /srv/docker-entrypoint.sh
 
@@ -12,13 +15,5 @@ if [[ ! -z "${DOCENT_VERBOSE}" ]] ; then
     env |grep DOCENT
 fi
 
-#example of image customization
-#if [[ ! -z "${DOCENT_NEURON_BUILD}" ]] ; then
-#    export PATH=${DOCENT_NEURON_BUILD}/nrn/bin:$PATH
-#    export PYTHONPATH=${DOCENT_NEURON_BUILD}/nrn/lib/python/
-#    [[ ! -z "${DOCENT_VERBOSE}" ]] &&  echo Image current PATH=$PATH, PYTHONPATH=$PYTHONPATH
-#fi
-
-# the last line is obligatory
 exec "$@"
 
