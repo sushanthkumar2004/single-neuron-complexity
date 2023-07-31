@@ -4,19 +4,19 @@
 
 # on laptop:
 #    Build only for amd64 (AMD), takes 2m35s
-#    time docker build -f Dockerfile.ubu22-neuron8  -t sk2004/ubu22-neuron8:v1 .
+#    time docker build -f Dockerfile.ubu22-neuron8  -t sk2004/ubu22-neuron8:v3 .
 #    Following code is to test the docker build on laptop:
 #         xhost + 127.0.0.1
-#         docker run -it  -e DISPLAY=host.docker.internal:0 --user sk2004 sk2004/ubu22-neuron8:v1   /bin/bash
+#         docker run -it  -e DISPLAY=host.docker.internal:0 --user sk2004 sk2004/ubu22-neuron8:v3   /bin/bash
 #          # Replace this ID here with the ID of the docker container that was built
 #          docker exec -it 0e7d1f050409 bash
 #          docker login
 #         docker ps -a
 #         docker commit -m "Ubuntu 22.04, Neuron 8 + Jupyter" -a "Sushanth Sathish Kumar" 0e7d1f050409 sk2004/ubu22-neuron8:v1
-#         time docker push sk2004/ubu22-neuron8:v1
+#         time docker push sk2004/ubu22-neuron8:v3
 # at NERSC:  
-#         shifterimg  pull docker:sk2004/ubu22-neuron8:v1
-#         shifter --image=sk2004/ubu22-neuron8:v2 /bin/bash
+#         shifterimg  pull docker:sk2004/ubu22-neuron8:v3
+#         shifter --image=sk2004/ubu22-neuron8:v3 /bin/bash
 # Docker image located at: https://hub.docker.com/r/sk2004/ubu22-neuron8/tags
 
 FROM ubuntu:22.04
@@ -36,6 +36,7 @@ RUN echo updating OS && \
 RUN echo installing python libs  && \
     pip3 install --upgrade pip && \
     pip3 install numpy scipy matplotlib h5py ruamel.yaml jupyter jupyter_server bluepyopt neuron Igor ipykernel && \
+    pip3 install xgboost scikit-learn && \
     pip3 install  --upgrade Pillow
 # notes: Pillow is needed by matplotlib backend 'TkAgg' 
 # h5py will not install on IBM ppc64le

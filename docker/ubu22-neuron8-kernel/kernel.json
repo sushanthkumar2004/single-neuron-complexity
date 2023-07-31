@@ -1,7 +1,7 @@
 {
     "argv": [
         "shifter",
-        "--image=sk2004/ubu22-neuron8:v2",
+        "--image=sk2004/ubu22-neuron8:v3",
         "/usr/bin/python3",
         "-m",
         "ipykernel_launcher",
